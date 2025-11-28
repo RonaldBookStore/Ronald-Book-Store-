@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Ronald Book Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #913713;
+            --dark-color: #6B290F;
+            --light-color: #E8D5C4;
+            --lighter-color: #F5EDE7;
+            --white: #FFFFFF;
+            --text-dark: #333333;
+            --text-light: #666666;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Poppins, sans-serif;
+        }
+        body {
+            background-color: var(--white);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+        header {
+            background-color: var(--primary-color);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .1);
+        }
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo-image {
+            height: 40px;
+            border-radius: 5px;
+            display: block;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            color: var(--white);
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        nav ul li {
+            margin-left: 2rem;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: var(--white);
+            font-weight: 500;
+            padding: .5rem 1rem;
+            border-radius: 20px;
+            transition: all .3s ease;
+        }
+        nav ul li a.active,
+        nav ul li a:hover {
+            background-color: var(--white);
+            color: var(--primary-color);
+        }
+        main {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+        }
+        section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        #home {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-color: var(--lighter-color);
+            border-radius: 20px;
+            margin: 2rem auto;
+            position: relative;
+            overflow: hidden;
+            height: 500px;
+        }
+        .home-content {
+            z-index: 2;
+            position: relative;
+        }
+        .home-content h1 {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        .home-content p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+        .cta-button {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all .3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 500;
+        }
+        .cta-button:hover {
+            background-color: var(--dark-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(145, 55, 19, .3);
+        }
+        #products {
+            background-color: var(--white);
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 3rem;
+            position: relative;
+            font-weight: 600;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .product-card {
+            background-color: var(--lighter-color);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, .1);
+            transition: all .3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, .15);
+        }
+        .product-image {
+            height: 200px;
+            background-color: var(--light-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: var(--primary-color);
+            overflow: hidden;
+        }
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .product-info {
+            padding: 1.5rem;
+        }
+        .product-title {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            margin-bottom: .5rem;
+            font-weight: 600;
+        }
+        .product-author {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        .buy-button {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: .7rem 1.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all .3s ease;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        .buy-button:hover {
+            background-color: var(--dark-color);
+        }
+        #location {
+            background-color: var(--lighter-color);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .location-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        .map-container {
+            flex: 1;
+            min-width: 300px;
+            height: 400px;
+            background-color: var(--light-color);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+        .contact-info {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.1rem;
+        }
+        .contact-item i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            width: 30px;
+            text-align: center;
+        }
+        #inquiry {
+            background-color: var(--white);
+        }
+        .inquiry-form {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--lighter-color);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, .1);
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: .5rem;
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: .8rem;
+            border: 1px solid var(--light-color);
+            border-radius: 10px;
+            font-size: 1rem;
+            background-color: var(--white);
+            font-family: Poppins, sans-serif;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        .submit-button {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: .8rem 2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all .3s ease;
+            font-size: 1.1rem;
+            display: block;
+            margin: 0 auto;
+            font-weight: 500;
+        }
+        .submit-button:hover {
+            background-color: var(--dark-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(145, 55, 19, .3);
+        }
+        footer {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 2rem;
+            text-align: center;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .social-links {
+            margin-top: 1rem;
+        }
+        .social-links a {
+            color: var(--white);
+            font-size: 1.5rem;
+            margin: 0 .5rem;
+            transition: all .3s ease;
+        }
+        .social-links a:hover {
+            color: var(--light-color);
+            transform: translateY(-5px);
+        }
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            nav ul li {
+                margin: .5rem;
+            }
+            .home-content h1 {
+                font-size: 2rem;
+            }
+            .section-title {
+                font-size: 2rem;
+            }
+            .location-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="Gemini_Generated_Image_qqud2gqqud2gqqud.jpg" alt="Ronald Book Store Logo" class="logo-image">
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home" class="tab-link active">Home</a></li>
+                    <li><a href="#products" class="tab-link">Products</a></li>
+                    <li><a href="#location" class="tab-link">Location</a></li>
+                    <li><a href="#inquiry" class="tab-link">Inquiry</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <section id="home">
+            <div class="home-content">
+                <h1>Welcome to Ronald Book Store</h1>
+                <p>Discover your next favorite book from our wide collection</p>
+                <a href="#products" class="cta-button">Browse Books</a>
+            </div>
+        </section>
+        <section id="products">
+            <h2 class="section-title">Our Products</h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="unnamed (29).jpg" alt="The Adventure of the Brave Little Lion Cover">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">The Adventure of the Brave Little Lion</h3>
+                        <p class="product-author">By Wandyaka Ronald</p>
+                        <p class="product-price">$3.00</p>
+                        <button class="buy-button" data-product-title="The Adventure of the Brave Little Lion">Buy Now</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="unnamed (18).jpg" alt="Timmy and the Magic Talking Shoes Cover">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Timmy and the Magic Talking Shoes</h3>
+                        <p class="product-author">By Wandyaka Ronald</p>
+                        <p class="product-price">$3.00</p>
+                        <button class="buy-button" data-product-title="Timmy and the Magic Talking Shoes">Buy Now</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="unnamed (16).jpg" alt="The Little Star Who Got Lost Cover">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">The Little Star Who Got Lost</h3>
+                        <p class="product-author">By Wandyaka Ronald</p>
+                        <p class="product-price">$3.00</p>
+                        <button class="buy-button" data-product-title="The Little Star Who Got Lost">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="location">
+            <h2 class="section-title">Visit Our Store</h2>
+            <div class="location-content">
+                <div class="map-container">
+                    <i class="fas fa-map-marked-alt" style="font-size: 4rem;"></i>
+                </div>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>123 Book Street, Reading City, Uganda</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+256759140389</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>info@ronaldbookstore.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Mon-Fri: 9am-7pm, Sat-Sun: 10am-5pm</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="inquiry">
+            <h2 class="section-title">Customer Inquiry</h2>
+            <div class="inquiry-form">
+                <form id="inquiryForm">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Your Message</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">Submit Inquiry</button>
+                </form>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2023 Ronald Book Store. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://www.facebook.com/profile.php?id=61584101713515" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://wa.me/c/256759140389" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.instagram.com/ronaldbookstore?igsh=NGlzcjV3bXFwaHpv" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // WhatsApp Business link from provided file
+        const whatsAppLink = "https://wa.me/c/256759140389";
+
+        // Tab navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabLinks = document.querySelectorAll('.tab-link');
+
+            tabLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    // Remove active class from all links
+                    tabLinks.forEach(tab => tab.classList.remove('active'));
+
+                    // Add active class to clicked link
+                    this.classList.add('active');
+
+                    // Smooth scroll to section
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+
+                    window.scrollTo({
+                        top: targetSection.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // Buy button functionality: Redirects to WhatsApp for secure payment.
+            const buyButtons = document.querySelectorAll('.buy-button');
+
+            buyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const productTitle = this.getAttribute('data-product-title');
+                    const productPrice = '$3.00';
+                    const encodedMessage = encodeURIComponent(`Hello, I would like to buy the book: "${productTitle}" for ${productPrice}. Please send me the payment details.`);
+
+                    // Redirect to WhatsApp chat with pre-filled message
+                    window.open(`${whatsAppLink}?text=${encodedMessage}`, '_blank');
+
+                    // Optional: Provide a small visual confirmation on the website
+                    const notification = document.createElement('div');
+                    notification.style.position = 'fixed';
+                    notification.style.bottom = '20px';
+                    notification.style.right = '20px';
+                    notification.style.backgroundColor = '#913713';
+                    notification.style.color = 'white';
+                    notification.style.padding = '15px 25px';
+                    notification.style.borderRadius = '10px';
+                    notification.style.zIndex = '2000';
+                    notification.textContent = `Ordering "${productTitle}". Redirecting to WhatsApp for payment.`;
+
+                    document.body.appendChild(notification);
+
+                    // Remove notification after 4 seconds
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 4000);
+                });
+            });
+
+            // Inquiry Form Submission (Simple placeholder)
+            const inquiryForm = document.getElementById('inquiryForm');
+            if (inquiryForm) {
+                inquiryForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    // Simple alert for submission feedback
+                    alert('Thank you for your inquiry! We will respond shortly.');
+
+                    // Optional: Reset the form after submission
+                    // inquiryForm.reset();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
